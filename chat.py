@@ -1,17 +1,17 @@
 import re
 import pandas as pd
 
-a = open('WhatsApp Chat.txt', 'r', encoding='utf-8')
+a = open('WhatsApp Chat 1.txt', 'r', encoding='utf-8')
 
 chat = a.read()
 
-pattern='\d{1,2}/\d{1,2}/\d{1,2},\s\d{1,2}:\d{1,2}\s\w\w\s-\s'
+pattern = '\d{1,2}/\d{1,2}/\d{2,4},\s\d{1,2}:\d{2}\s-\s'
 
 message = re.split(pattern, chat)[1:]
 dates = re.findall(pattern, chat)
 
 df = pd.DataFrame({'user_message': message, 'message_date': dates})
-df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M %c%c - ')
+df['message_date'] = pd.to_datetime(df['message_date'], format='%d/%m/%y, %H:%M - ')
 df.rename(columns={'message_date': 'date'}, inplace=True)
 
 users = []
@@ -28,6 +28,8 @@ for messages in df['user_message']:
 df['user'] = users
 df['message'] = messages
 df.drop(columns=['user_message'], inplace=True)
+
+df.head()
 
 df['only_date'] = df['date'].dt.date
 df['year'] = df['date'].dt.year
