@@ -26,3 +26,5 @@ def fetch_stats(selected_user, df):
 
 def most_busy_user(df):
     x = df['user'].value_counts().head()
+
+    return x

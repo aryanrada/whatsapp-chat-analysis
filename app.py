@@ -40,4 +40,12 @@ if uploaded_file is not None:
 
         if selected_user == 'Overall':
             st.title('Most Busy Users')
+            x = help.most_busy_user(df)
+            fig, ax = plt.subplots()
+
             col1, col2 = st.beta_columns(2)
+
+            with col1:
+                ax.bar(x.index, x.values)
+                plt.xticks(rotation='vertical')
+                st.pyplot(fig)
