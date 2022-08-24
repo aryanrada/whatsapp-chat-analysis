@@ -1,5 +1,7 @@
 import streamlit as st
 import chat_organizing, help
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 st.sidebar.title("Whatsapp Chat Analysis")
 
@@ -19,7 +21,7 @@ if uploaded_file is not None:
     selected_user = st.sidebar.selectbox("Show analysis accordingly", user_list)
 
     if st.sidebar.button("Show Analysis"):
-        num_messages, words = help.fetch_stats(selected_user, df)
+        num_messages, words, num_media_messages, num_links = help.fetch_stats(selected_user, df)
         
         col1, col2, col3, col4 = st.beta_columns(4)
 
@@ -29,3 +31,13 @@ if uploaded_file is not None:
         with col2:
             st.header("Total Words")
             st.title(words)
+        with col3:
+            st.header("Media Shared")
+            st.title(num_media_messages)
+        with col4:
+            st.header("Links Shared")
+            st.title(num_links)
+
+        if selected_user == 'Overall':
+            st.title('Most Busy Users')
+            col1, col2 = st.beta_columns(2)
