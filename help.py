@@ -1,3 +1,5 @@
+from os import sep
+from tkinter.tix import COLUMN
 from urlextract import URLExtract
 from wordcloud import WordCloud
 import pandas as pd
@@ -26,5 +28,13 @@ def fetch_stats(selected_user, df):
 
 def most_busy_user(df):
     x = df['user'].value_counts().head()
+    df = round((df['user'].value_counts() / df.shape[0]) * 100, 2).reset_index().rename(columns = {'index': 'name', 'user': 'percent'})
+    return x, df
 
-    return x
+def create_wordcloud(selected_user, df):
+    if selected_user != 'Overall':
+        df = df[df['user'] == selected_user].shape[0]
+
+    wc = WordCloud(width=500, height=500, min_font_size=10, background_color='white')
+    df_wc = wc.generate(df['message'].str.cat(sep=" "))
+    return df_wc
